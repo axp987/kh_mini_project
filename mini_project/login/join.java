@@ -37,37 +37,36 @@ public class join extends JFrame {
 		lblNewLabel_2.setFont(new Font("Serif", Font.PLAIN, 10));
 		lblNewLabel_2.setBounds(135, 75, 150, 15);
 		getContentPane().add(lblNewLabel_2);
-		
+		//////////////////
 		// 아이디 입력
 		JLabel	userName = new JLabel("Email");
 		userName.setFont(new Font("Serif", Font.BOLD, 13));
 		userName.setBounds(92, 133, 40, 20);
 		getContentPane().add(userName);
-	//////////////////
 		
 		inputUserName = new JTextField();
 		inputUserName.setBounds(92, 157, 206, 25);
 		getContentPane().add(inputUserName);
 		inputUserName.setColumns(10);
-
+		
 		JButton userNameCheck = new JButton("중복확인");
 		userNameCheck.setFont(new Font("Serif", Font.PLAIN, 7));
 		userNameCheck.setBounds(295, 155, 55, 30);
 		getContentPane().add(userNameCheck);
-//		userNameCheck.addActionListener(new ActionListener() {	
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				join_jdbc same = new join_jdbc(userName.getText());
-//				boolean test = same.sameTest();
-//				if(test == true) {
-//					JOptionPane.showMessageDialog(null, "중복된 이메일입니다.");
-//				}
-//				else {
-//					JOptionPane.showMessageDialog(null, "사용 가능한 이메일입니다.");
-//				}
-//				
-//			}
-//		});
+		userNameCheck.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				join_jdbc same = new join_jdbc(userName.getText());
+				boolean test = same.sameTest();
+				if(test == true) {
+					JOptionPane.showMessageDialog(null, "중복된 이메일입니다.");
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "사용 가능한 이메일입니다.");
+				}
+				
+			}
+		});
 
 
 
@@ -254,8 +253,6 @@ public class join extends JFrame {
 		getContentPane().add(bt_submit);
 
 		bt_submit.addActionListener(new ActionListener() {
-
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, " 회원가입을 환영합니다.");
@@ -271,8 +268,6 @@ public class join extends JFrame {
 		getContentPane().add(bt_cancel);
 
 		bt_cancel.addActionListener(new ActionListener() {
-
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -284,8 +279,6 @@ public class join extends JFrame {
 					JOptionPane.showConfirmDialog(null, "가입을 취소합니다.");
 					dispose();
 				}
-
-
 			}
 		});
 
@@ -299,10 +292,7 @@ public class join extends JFrame {
 		setBounds(100, 100, 375, 667);
 		getContentPane().setLayout(null);
 
-
-		System.out.println("6");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-
 	}
 }

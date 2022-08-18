@@ -100,7 +100,6 @@ public class loginPage extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-
 			}
 		});
 		// 계정 찾기 위치 
