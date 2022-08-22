@@ -2,6 +2,8 @@ package	login;
 
 import javax.swing.*;
 
+
+import jdbclass.*;
 import main.*;
 
 import java.awt.*;
@@ -16,11 +18,9 @@ import java.awt.event.MouseEvent;
 
 
 public class loginPage extends JFrame{
-
 	private JTextField pw;
 	private JTextField userName;
 	private JPasswordField passwordField;
-
 
 	public loginPage() {
 		//로고 이미지 
@@ -45,7 +45,7 @@ public class loginPage extends JFrame{
 		userName.setColumns(20);
 
 		//이메일 도메인 선택 
-		String[] email = {};
+		//String[] email = {};
 
 		//비밀번호 위치 표시  
 		JLabel pw = new JLabel("Password");
@@ -74,9 +74,32 @@ public class loginPage extends JFrame{
 		jb1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Welcome!");
-				setVisible(false);
-				totalPage total = new totalPage("Music box");
+				char []cpw =  passwordField.getPassword();
+				String pw = "";
+				String ema = userName.getText();
+				for(int i=0; i<cpw.length; i++) { //getPassword 값 가져오는 소스
+					Character.toString(cpw[i]);
+					 pw += (pw.equals("")) ? ""+cpw[i]+"" : ""+cpw[i]+"";
+				}
+				
+				Select c = new Select();
+				boolean check = c.loginSelect(ema, pw);
+				
+				if(userName.equals(null) || passwordField.equals(null)) {
+					JOptionPane.showMessageDialog(null, "아이디 또는 패스워드를 입력해주세요.");
+				}
+				else if(check == true) {
+					JOptionPane.showMessageDialog(null, "Welcome!");
+					setVisible(false);
+					totalPage total = new totalPage("Music box");
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "아이디 또는 패스워드가 틀렸습니다.");
+					userName.setText("");
+					passwordField.setText("");
+				}
+//				totalPage total = new totalPage("Music box");
+//				setVisible(false);
 			}
 		});
 
@@ -89,9 +112,6 @@ public class loginPage extends JFrame{
 		jb1.setBounds(135, 275, 180, 40);
 		getContentPane().add(jb1);
 
-
-
-
 		//계정 찾기 메시지 
 		JLabel find = new JLabel("Find My Account");
 
@@ -99,7 +119,7 @@ public class loginPage extends JFrame{
 		find.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				new findPage();
 			}
 		});
 		// 계정 찾기 위치 
@@ -110,11 +130,6 @@ public class loginPage extends JFrame{
 		find.setBounds(180, 320, 90, 25);
 		getContentPane().add(find);
 
-
-
-
-
-
 		//회원 가입 메시지 
 		JLabel join = new JLabel("I Wanna Join!");
 
@@ -123,7 +138,6 @@ public class loginPage extends JFrame{
 		join.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("회원가입창");
 				new join();
 			}
 		});
@@ -152,10 +166,6 @@ public class loginPage extends JFrame{
 
 
 		setVisible(true);
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-
 	}
 }

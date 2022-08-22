@@ -14,11 +14,11 @@ public class totalPage extends JFrame {
 		JTabbedPane pane = createTabbedPane();  // 탭에서 메뉴바와 같은 기능
 		this.add(pane, BorderLayout.CENTER); 
 	}
-
+	
 	public JTabbedPane createTabbedPane()
 	{
 		JTabbedPane pane = new JTabbedPane(JTabbedPane.BOTTOM);
-		pane.addTab("홈", new mainPage());
+		pane.addTab("홈", new mainPage_test());
 		pane.addTab("게시판", new boardPage());  // 레이블에 이미지도 가능
 		pane.addTab("마이페이지", new myPage());
 		pane.setBounds(0, 0, 1000, 700);

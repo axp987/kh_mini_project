@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,18 +27,24 @@ import java.util.Scanner;
 
 import javax.swing.*;
 import java.awt.*;
-
-import javax.swing.JScrollPane;
-
-public class mainPage extends JPanel {
+import jdbclass.*;
+public class mainPage_test extends JPanel {
 
 	private JTextField textField_1;
 	int rowCount =20;
 	int currentPage =0;
 	int totalCount = 0;
-
-
-	public mainPage() {
+	//DB연결
+	Connection con = null;           
+	PreparedStatement pstmt = null;  
+	ResultSet rs = null;             
+	String sql = null;  
+	DefaultTableModel model;
+	int rowsc;
+	int row=0, col=0;
+	String link;
+	
+	public mainPage_test() {
 		JFrame frame = new JFrame();
 		//button1(노래목록) 생성 및 위치
 		JButton button1 = new JButton("노래 목록");
@@ -61,10 +70,18 @@ public class mainPage extends JPanel {
 		model = new DefaultTableModel(header,0);
 
 		JTable table = new JTable(model);
-
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane jScrollPane = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		jScrollPane.setBounds(12, 76, 335, 410);
 		add(jScrollPane);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				col = table.getSelectedColumn();
+				row = table.getSelectedRow();
+				System.out.println(table.getValueAt(row, col));
+			}
+		});
 
 
 		//button4,button3 페이지 넘기기 버튼 생성 및 위치
@@ -90,8 +107,6 @@ public class mainPage extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setVisible(true);
 
-
-
 		//button1(노래목록)클릭 시 이벤트 처리
 		button1.addActionListener(new ActionListener() {
 
@@ -105,7 +120,6 @@ public class mainPage extends JPanel {
 				// 전체 테이블 목록의 화면을 지워주는 메서드
 				model.setRowCount(0);
 				//DB에서 전체 내역을 조회하는 메서드 호출
-				//				select();
 				search("");
 
 			}
@@ -113,7 +127,6 @@ public class mainPage extends JPanel {
 
 		//button2(검색) 클릭 시 이벤트 처리
 		button2.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String searchText = "";
@@ -176,20 +189,73 @@ public class mainPage extends JPanel {
 				search(searchText);
 			}
 		});
+		
+		
+		//신청하기 버튼
+		button5.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
+				int result = JOptionPane.showConfirmDialog(null, "신청하시겠습니까?", "확인", JOptionPane.YES_NO_OPTION);
+				
+				String sse = table.getValueAt(row, col).toString();
+				
+				String urlLink = musicUrl(sse);
+				System.out.println(sse);
+				System.out.println(urlLink);
+				
+				
+				if(result == JOptionPane.CLOSED_OPTION){
+					JOptionPane.showMessageDialog(null, " 창이 닫힙니다.");
+				}else if(result == JOptionPane.NO_OPTION){
+					JOptionPane.showMessageDialog(null, "취소를 클릭하셨습니다. ");
+				}else {
+					try {
+						Desktop.getDesktop().browse(new  URI(urlLink));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (URISyntaxException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
-
-
+				}
+			}
+		});	
 	}//public mainPage() end
 
-	//DB연결
-	Connection con = null;           
-	PreparedStatement pstmt = null;  
-	ResultSet rs = null;             
-	String sql = null;  
-	DefaultTableModel model;
+	public String musicUrl(String value) {
+		try {
+			System.out.println(value);
+			con = DBConnection.getConnection();
+			String sql = "Select url from MUSICTABLE_1 WHERE TITLE = ? OR SINGER = ? OR ALBUM = ?";
+			
 
-
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, value);
+			pstmt.setString(2, value);
+			pstmt.setString(3, value);
+			
+			rs = pstmt.executeQuery();
+			link = "";
+			while(rs.next()) {
+				link = rs.getString("url");
+			}
+			pstmt.close(); rs.close();
+			return link;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "전송 실패";
+	}
+	
+//	public void musicSelect(int value) {
+//		try {
+//			
+//		}
+//	}
+	
 	void connect() {
 		String driver =
 				"oracle.jdbc.driver.OracleDriver";
@@ -197,7 +263,7 @@ public class mainPage extends JPanel {
 		String url = 
 				"jdbc:oracle:thin:@khadwdb_medium?TNS_ADMIN=/Users/hihochan/Public/Wallet_KhADWDB";
 
-		String user = "admin";
+		String user =  "admin";
 
 		String password = "Oraclepwd1!@";
 
@@ -210,7 +276,7 @@ public class mainPage extends JPanel {
 
 			// 2단계 : 오라클 데이터베이스와 연결 시도
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("연결성공");
+
 
 		} catch (Exception e) {
 
@@ -319,4 +385,12 @@ public class mainPage extends JPanel {
 			e.printStackTrace();
 		}	
 	}//search() 메서드 end
+
+
+
+
+
+
+
+
 }//public class mainPage extends JPanel end
