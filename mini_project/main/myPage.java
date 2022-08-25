@@ -1,6 +1,7 @@
 package main;
 // 마이페이지, Insert 클래스 >> 등록 소스 주석 처리한부분
 import javax.swing.*;
+
 import javax.swing.text.MaskFormatter;
 
 import jdbclass.DBConnection;
@@ -24,6 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.*;
 import login.*;
+
 public class myPage extends JPanel {
 	private JLabel EmailField;
 	private JTextField birthField;
@@ -37,12 +39,16 @@ public class myPage extends JPanel {
 	private JTextField adr_tf2;
 	private JTextField textField;
 	private JFormattedTextField birthDate_Input;
+	public static String email;
+	private String order_name;
+	
 
 	Connection con = null;           
 	PreparedStatement pstmt = null;  
 	ResultSet rs = null;             
 	String sql = null; 
-
+	
+	
 
 	public myPage() {
 		JFrame frame = new JFrame();
@@ -54,14 +60,16 @@ public class myPage extends JPanel {
 		// 이메일 입력
 		JLabel Email = new JLabel("* 이 메 일");
 		Email.setFont(new Font("Serif", Font.BOLD, 13));
-		Email.setBounds(92, 145, 40, 20);
+		Email.setBounds(92, 145, 80, 20);
 		add(Email);
-
+		
+		
 		EmailField = new JLabel();
 		EmailField.setBounds(165, 143, 206, 25);
 		EmailField.setFont(new Font("Serif", Font.BOLD, 13));
 		add(EmailField);
-
+		email = EmailField.getText();
+		
 		// 비밀번호 입력       
 		JLabel pw = new JLabel("Now Password");
 		pw.setFont(new Font("Serif", Font.BOLD, 13));
@@ -99,6 +107,8 @@ public class myPage extends JPanel {
 				boolean check = ch.changePassword(EmailField.getText(), pw);
 				if(check == true) {
 					passwordUpdate();
+					pwField.setText(null);
+					pwField2.setText(null);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "현재 패스워드가 다릅니다.");
@@ -111,13 +121,14 @@ public class myPage extends JPanel {
 		name.setFont(new Font("Serif", Font.BOLD, 13));
 		name.setBounds(80, 85, 70, 20);
 		add(name);
-
+		
+		
 		// 이름 입력 
 		name_tf = new JTextField();
 		name_tf.setBounds(160, 85, 140, 25);
 		add(name_tf);
 		name_tf.setColumns(10);
-
+		order_name = name_tf.getText();
 
 		//생년월일 섹션 
 		JLabel birthDate = new JLabel("* 생 년 월 일");
@@ -169,8 +180,6 @@ public class myPage extends JPanel {
 		try 
 		{
 			adr_tf1 = new JTextField("주소 1 입력");
-			//adr_tf1.setForeground(new Color(192, 192, 192));
-
 
 			adr_tf1.addMouseListener(new MouseAdapter() {
 				@Override
@@ -289,7 +298,7 @@ public class myPage extends JPanel {
 			System.out.println(select.getEmailPass());
 			pstmt.setString(1, select.getEmailPass());
 			rs = pstmt.executeQuery();
-			
+		
 			String ema = "", name = "", birthd = "", phone = "", add1 = "", add2 = "", time = "";
 			while(rs.next()) {
 				ema = rs.getString("EMA");
@@ -400,6 +409,20 @@ public class myPage extends JPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
+		
+		
 	} //xx
+	
+	public myPage(String order_name) {
+		this.order_name = order_name;
+	}
+	
+	public String getOrder_name() {
+		return order_name;
+	}
+
+	public void setOrder_name(String order_name) {
+		this.order_name = order_name;
+	}
 }//class
 

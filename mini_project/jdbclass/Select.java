@@ -3,23 +3,51 @@ package jdbclass;
 import java.sql.Connection;
 
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import main.*;
+import admin.admin_user;
 public class Select extends boardPage {
 	private Connection conn = null; // 연결
 	private PreparedStatement pstmt = null; // 전송
 	private ResultSet rs;
-	private static String emailPass;
+	private static String emailPass; // 로그인 완료했을때 회원의 이메일을 기록해둠
 	private DefaultTableModel model;
+	private JTable table;
 	
-	public Select() {
-		
-	}
+	
+	public Select() { }
+	
 	public Select(String emailPass) {
 		this.emailPass = emailPass;
+	}
+	
+	public void userList() {
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "SELECT u.UCODE, u.EMA, u.NA, u.BIRTHD, u.PH, u.ADDR1, u.ADDR2 from USERSTABLE u join USERLEVEL l on u.LCODE = l.LCODE WHERE l.LCODE = 1";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Long code = rs.getLong("UCODE");
+				String ema = rs.getString("EMA");
+				String name = rs.getString("NA");
+				String b = rs.getString("BIRTHD");
+				String phone = rs.getString("PH");
+				String a1 = rs.getString("ADDR1");
+				String a2 = rs.getString("ADDR2");
+				
+				Object []data = { code, ema, name, b, phone, a1, a2 };
+				admin_user.model.addRow(data);
+			}
+			pstmt.close(); rs.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean loginSelect(String ema, String upw) { // 아이디 패스워드 확인 코드
@@ -34,6 +62,8 @@ public class Select extends boardPage {
 				id = rs.getString("EMA");
 				pw = rs.getString("PW");
 			}
+			System.out.println(id);
+			System.out.println(pw);
 			if(id.equals(ema) && pw.equals(upw)) {
 				emailPass = ema;
 				System.out.println("login email: " + emailPass);
@@ -55,7 +85,7 @@ public class Select extends boardPage {
 			
 			pstmt.setString(1, emailPass);
 			rs = pstmt.executeQuery();
-		
+			
 			while(rs.next()) {
 				code = rs.getLong("ucode");
 				return code;
@@ -81,14 +111,9 @@ public class Select extends boardPage {
 				String story = rs.getString("story");
 				String time = rs.getString("NOWTIME");
 				
-				
 				Object []data = { no, ema, title, story, time };
-				
 			}
-
-			
 			pstmt.close(); rs.close();
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -114,6 +139,29 @@ public class Select extends boardPage {
 		}
 		return "전송 실패";
 	}
+	
+	public boolean adminCheck() { // 관리자 유무
+		try {
+			conn = DBConnection.getConnection();
+			String sql= "Select u.EMA from USERSTABLE u join USERLEVEL l on u.lcode = l.lcode WHERE l.lcode = 0";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+		
+			String code = "";
+			while(rs.next()) {
+				code = rs.getString("EMA");
+				if(emailPass.equals(code)) {
+					return true;
+				}
+			}
+			pstmt.close(); rs.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
 	
 	public String getEmailPass() {
 		return emailPass;

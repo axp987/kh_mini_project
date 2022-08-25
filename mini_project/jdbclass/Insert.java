@@ -36,7 +36,8 @@ public class Insert {
 			// 1단게 + 2단계
 			con = DBConnection.getConnection();
 
-			String sql = "insert into USERSTABLE values(?, ?, ?, ?, ?, ?, ?, ?, TO_CHAR(SYSDATE, 'yy.mm.dd HH:MI:SS'))";
+			String sql = "insert into USERSTABLE values(?, ?, ?, ?, ?, ?, ?, ?, ?,TO_CHAR(SYSDATE, 'YY\"년\"MM\"월\"DD\"일\" HH24\"시\"MI\"분\"'))";
+			//String sql = "insert into USERSTABLE values(?, ?, ?, ?, ?, ?, ?, ?, ?, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'))";
 			pstmt = con.prepareStatement(sql);
 			
 		    long ucode = Long.parseLong(ranCode());
@@ -73,41 +74,41 @@ public class Insert {
 		}
 	}
 	
-	public Insert(String title, String story) { // 작성 버튼 클릭시 공지사항 제목과 내용 공지 테이블에 저장
-		try {
-			con = DBConnection.getConnection();
-			String usql = "select EMA FROM USERSTABLE WHERE ucode = ?";
-			pstmt = con.prepareStatement(usql);
-			Select uselect = new Select();
-			System.out.println("ucode: " + uselect.ucodeSelect());
-			pstmt.setLong(1, uselect.ucodeSelect());
-			
-			rs = pstmt.executeQuery(); 
-			while(rs.next()) {
-				ema = rs.getString("EMA");
-			}
-			pstmt.close(); rs.close();
-			// 시퀀스번호, 이메일, 제목, 내용, 등록일자, uselect.ucodeSelect())
-			String sql = "insert into GO VALUES (GO_SEQ.NEXTVAL, ?, ?, ?, TO_CHAR(SYSDATE, 'yy.mm.dd HH:MI:SS'), ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, ema);
-			pstmt.setString(2, title);
-			pstmt.setString(3, story);
-			pstmt.setLong(4, uselect.ucodeSelect());
-			int res = pstmt.executeUpdate();
-			if(res > 0) {
-				System.out.println("공지사항 등록 완료");
-			}
-			else {
-				System.out.println("공지사항 등록 실패");
-			}
-			pstmt.close(); rs.close();
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		//pstmt.setString(1, );
-		
-	}
+//	public Insert(String title, String story) { // 작성 버튼 클릭시 공지사항 제목과 내용 공지 테이블에 저장
+//		try {
+//			con = DBConnection.getConnection();
+//			String usql = "select EMA FROM USERSTABLE WHERE ucode = ?";
+//			pstmt = con.prepareStatement(usql);
+//			Select uselect = new Select();
+//			System.out.println("ucode: " + uselect.ucodeSelect());
+//			pstmt.setLong(1, uselect.ucodeSelect());
+//			
+//			rs = pstmt.executeQuery(); 
+//			while(rs.next()) {
+//				ema = rs.getString("EMA");
+//			}
+//			pstmt.close(); rs.close();
+//			// 시퀀스번호, 이메일, 제목, 내용, 등록일자, uselect.ucodeSelect())
+//			String sql = "insert into GO VALUES (GO_SEQ.NEXTVAL, ?, ?, ?, TO_CHAR(SYSDATE, 'yy.mm.dd HH:MI:SS'), ?)";
+//			pstmt = con.prepareStatement(sql);
+//			pstmt.setString(1, ema);
+//			pstmt.setString(2, title);
+//			pstmt.setString(3, story);
+//			pstmt.setLong(4, uselect.ucodeSelect());
+//			int res = pstmt.executeUpdate();
+//			if(res > 0) {
+//				System.out.println("공지사항 등록 완료");
+//			}
+//			else {
+//				System.out.println("공지사항 등록 실패");
+//			}
+//			pstmt.close(); rs.close();
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		//pstmt.setString(1, );
+//		
+//	}
 	
 	public String ranCode() { // 유저코드 만드는 소스
 		Date date = new Date();

@@ -63,7 +63,7 @@ public class join extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				overlapCheck same = new overlapCheck(inputUserName.getText());
-				boolean moretest = same.sameTest();
+				moretest = same.sameTest();
 				if(inputUserName.getText().length() == 0) {
 					JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.");
 				}

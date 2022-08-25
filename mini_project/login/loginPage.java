@@ -85,7 +85,7 @@ public class loginPage extends JFrame{
 				Select c = new Select();
 				boolean check = c.loginSelect(ema, pw);
 				
-				if(userName.equals(null) || passwordField.equals(null)) {
+				if(userName.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "아이디 또는 패스워드를 입력해주세요.");
 				}
 				else if(check == true) {
@@ -102,7 +102,6 @@ public class loginPage extends JFrame{
 //				setVisible(false);
 			}
 		});
-
 
 
 		// 엔터 버튼 폰트 설정 

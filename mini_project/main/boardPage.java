@@ -1,166 +1,169 @@
 package main;
 
 import jdbclass.*;
-import boardInsert.*;
-
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.nio.ByteOrder;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-//합칠때는 extends JPanel  수정
-//frame.setBounds(0,0,375,667);
-//frame.setResizable(false);
-//으로 변경
-//setVisible(true); 삭제
-//main 메소드
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.awt.Color;
+import java.awt.SystemColor;
+
+
 public class boardPage extends JPanel {
-	private DefaultTableModel model1;
-	private DefaultTableModel model2;
-	private DefaultTableModel model3;
-	private JTable table1;
-	private JTable table2;
-	private JTable table3;
-	private DefaultTableModel model;
-	
+	private JTable table;
 	public boardPage() {
 		JFrame frame = new JFrame();
-		Container c = frame.getContentPane();
 
 		//메뉴 선택(메인페이지/게시판/마이페이지)
 		JPanel container1 = new JPanel();
 		JPanel container2 = new JPanel();
 		JPanel container3 = new JPanel();
-		
-		JPanel container4 = new JPanel();
-		JPanel container5 = new JPanel();
-		JPanel container6 = new JPanel();
-		
-		JButton button1 = new JButton("검색");
-		JButton button2 = new JButton("검색");
-		JButton button3 = new JButton("검색");
-		
-		JButton button4 = new JButton("작성"); // 공지
-		JButton button5 = new JButton("작성"); // Q/A
-		JButton button6 = new JButton("작성"); // 노래
-		
-		JTextField textBox1 = new JTextField(20);
-		JTextField textBox2 = new JTextField(20);
-		JTextField textBox3 = new JTextField(20);
-		
+
+		JLabel label1 = new JLabel("이용 방법");
+		 
 		//게시판 → 탭(공지사항/Q&A/신청곡아카이브)
 		JTabbedPane tab = new JTabbedPane();
-//		while(rs.next()){            // 각각 값을 가져와서 테이블값들을 추가
-//            model.addRow(new Object[]{rs.getString("id"),rs.getString("name"),
-//                                      rs.getString("gender"),rs.getString("sutdascore"),
-//                                      rs.getString("latest")});
-//        }
-		tab.add("공지사항", container4);
-		String []header1 = { "No.", "제목", "작성자", "작성일"};
-		model1 = new DefaultTableModel(header1, 0);
-		table1 = new JTable(model1);
-		JScrollPane jsp1 = new JScrollPane(table1, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp1.setPreferredSize(new Dimension(350, 470));
-		container4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				model.setRowCount(0);
-				Select select = new Select();
-				select.selectGO();
-			}
-		});
+		tab.setBounds(0, 0, 375, 667);
+
+		tab.add("공지사항", container1);
+		container1.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 204, 255));
+		panel.setBounds(0, 0, 355, 600);
+		container1.add(panel);
+		panel.setLayout(null);
+		
+		JLabel info_logo = new JLabel("");
+		info_logo.setBackground(new Color(255, 153, 255));
+		info_logo.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/logo_001.png")));
+		info_logo.setBounds(75, 5, 200, 120);
+		panel.add(info_logo);
+		
+		JLabel info_01 = new JLabel("");
+		info_01.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/label_01.png")));
+		info_01.setBounds(50, 98, 260, 80);
+		panel.add(info_01);
+		
+		JLabel info_02 = new JLabel("");
+		info_02.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/label_02.png")));
+		info_02.setBounds(50, 190, 260, 60);
+		panel.add(info_02);
 		
 		
-		tab.add("Q&A", container5);
-		String []header2 = { "No.", "제목", "작성자", "작성일"};
-		model2 = new DefaultTableModel(header2, 0);
-		table2 = new JTable(model2);
-		JScrollPane jsp2 = new JScrollPane(table2, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp2.setPreferredSize(new Dimension(350, 470));
-		button5.addActionListener(new ActionListener() {	
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		JLabel info_03 = new JLabel("");
+		info_03.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/label_03.png")));
+		info_03.setBounds(50, 260, 290, 60);
+		panel.add(info_03);
+		
+		JLabel info_04 = new JLabel("");
+		info_04.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/label_04.png")));
+		info_04.setBounds(50, 340, 290, 90);
+		panel.add(info_04);
+		
+		
+		JLabel info_05 = new JLabel("");
+		info_05.setBounds(50, 440, 260, 90);
+		info_05.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/label_06.png")));
+		panel.add(info_05);
+		
+		
+		JLabel icon_01 = new JLabel("");
+		icon_01.setBounds(260, 500, 50, 50);
+		icon_01.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/cursor_icon.png")));
+		panel.add(icon_01);
+		
+		//tab.add("Q&A", container2);
+		//tab.add("Q&A", container2);
+				tab.add("신청곡 아카이브", container2);
 				
+				container2.setLayout(null);
+				
+				//Jtable과 Jscrollpane 생성 및 위치/////////////////////////////////////////
+				String[] header = {"NO","TITLE", "SINGER","DATE"};
+
+				DefaultTableModel model = new DefaultTableModel(header,0);
+				
+				JPanel panel_1 = new JPanel();
+				panel_1.setBackground(Color.PINK);
+				panel_1.setBounds(10, 80, 330, 480);
+				container2.add(panel_1);
+				panel_1.setLayout(null);
+				
+				JTable table_1 = new JTable(model);
+				
+				JScrollPane jScrollPane = new JScrollPane(table_1, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				jScrollPane.setBounds(12, 10, 305, 460);
+				panel_1.add(jScrollPane);
+				////////////////////////////////////////////////////////////////////////////
+				
+				JLabel lblNewLabel_7 = new JLabel("");
+				lblNewLabel_7.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/playlist_icon.png")));
+				lblNewLabel_7.setFont(new Font("serif", Font.PLAIN, 13));
+				lblNewLabel_7.setBounds(20, 6, 140, 45);
+				container2.add(lblNewLabel_7);
+				
+				JLabel lblNewLabel_8 = new JLabel("");
+				lblNewLabel_8.setIcon(new ImageIcon(boardPage.class.getResource("/logo_Image/logo_001.png")));
+				lblNewLabel_8.setBounds(163, -18, 207, 120);
+				container2.add(lblNewLabel_8);
+				
+				JButton btnNewButton = new JButton("새로고침");
+				btnNewButton.setFont(new Font("Serif", Font.BOLD, 13));
+				btnNewButton.setBounds(52, 51, 80, 30);
+				container2.add(btnNewButton);
+				
+				
+				
+				setLayout(null);
+				
+			
+			
+				add(tab);
+				frame.setBounds(0,0,375,667);
+				frame.setResizable(false);
 			}
-		});
-		
-		tab.add("신청곡 아카이브", container6);
-		String []header3 = { "No.", "제목", "작성자", "작성일"};
-		model3 = new DefaultTableModel(header3, 0);
-		table3 = new JTable(model2);
-		JScrollPane jsp3 = new JScrollPane(table3, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp3.setPreferredSize(new Dimension(350, 470));
-		
-		
-		
-		container1.add(button1);
-		container1.add(textBox1);
-		container1.add(button4);
-		container4.add(container1, BorderLayout.NORTH);
-		container4.add(jsp1, BorderLayout.SOUTH);
-		
-		container2.add(button2);
-		container2.add(textBox2);
-		container2.add(button5);
-		container5.add(container2, BorderLayout.NORTH);
-		container5.add(jsp2, BorderLayout.CENTER);
-		
-		
-		container3.add(button3);
-		container3.add(textBox3);
-		container3.add(button6);
-		container6.add(container3, BorderLayout.NORTH);
-		container6.add(jsp3);
-		
-		
-	
-		add(tab);
-		frame.setBounds(0,0,375,667);
-		frame.setResizable(true);
-//		setBounds(0,0,375,667);
-//		setResizable(false);
-//		setVisible(true);
-		
-		
-	}
+//DB연결
+		Connection con = null;           
+		PreparedStatement pstmt = null;  
+		ResultSet rs = null;             
+		String sql = null;  
+		DefaultTableModel model;
 	
 	
-	public DefaultTableModel getModel1() {
-		return model1;
-	}
+		void connect() {
+			String driver =
+				"oracle.jdbc.driver.OracleDriver";
 
-	public void setModel1(DefaultTableModel model1) {
-		this.model1 = model1;
-	}
+			String url = 
+				"jdbc:oracle:thin:@localhost:1521:xe";
 
-	public DefaultTableModel getModel2() {
-		return model2;
-	}
+			String user = "web";
 
-	public void setModel2(DefaultTableModel model2) {
-		this.model2 = model2;
-	}
+			String password = "1234";
 
-	public DefaultTableModel getModel3() {
-		return model3;
-	}
+		try {
+			// 1단계 : 오라클 드라이버를 로딩
+			// ==> 동적으로 로딩 : 프로그램을 실행 시에 오라클
+			//                 드라이버를 로딩한다는 의미.
+				Class.forName(driver);
+			
 
-	public void setModel3(DefaultTableModel model3) {
-		this.model3 = model3;
-	}
-}
+			// 2단계 : 오라클 데이터베이스와 연결 시도
+				con = DriverManager.getConnection(url, user, password);
+		
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+	}  
+		void insert() {
+			
+		}
+	}// connection() 메서드 end

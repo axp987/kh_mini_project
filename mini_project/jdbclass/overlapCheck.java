@@ -81,7 +81,7 @@ public class overlapCheck {
 		return false;
 	}
 
-	public boolean passwordCheck() { // 해당 유저코드가 존재하는지 체크하는 고드
+	public boolean passwordCheck() { // 해당 유저코드로 패스워드를 찾는 코드
 		try {
 			conn = DBConnection.getConnection();
 			String sql = "SELECT count(*) cnt FROM USERSTABLE WHERE ucode = ?";
