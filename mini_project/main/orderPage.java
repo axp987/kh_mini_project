@@ -25,7 +25,6 @@ import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.jsoup.select.Evaluator.IsEmpty;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -58,6 +57,7 @@ public class orderPage extends JPanel {
 //							{no, "치즈 피자", count, 5000}, {no, "페퍼로니 피자", count, 5500},
 //							{no, "불고기 피자", count, 6000}};
 	public orderPage() {
+		setBackground(new Color(255, 204, 255));
 		frame = new JFrame();
 		frame.setTitle("주문 ");
 		setBounds(100, 100, 375, 667);
@@ -65,7 +65,7 @@ public class orderPage extends JPanel {
 		//frame.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
+		panel.setBackground(new Color(255, 204, 255));
 		setBounds(12, 10, 337, 600);
 		//frame.getContentPane().add(panel);
 		add(panel);
@@ -91,14 +91,14 @@ public class orderPage extends JPanel {
 		table = new JTable(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane jScrollPane = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		table.setBounds(30, 450, 280, 230);
-		jScrollPane.setBounds(30, 380, 280, 180);
+		table.setBounds(30, 450, 300, 230);
+		jScrollPane.setBounds(30, 357, 300, 200);
 
 		// pink pink 칵테일 이름표
 		JLabel jl_drink01 = new JLabel("1. PINK  PINK");
 		jl_drink01.setFont(new Font("Serif", Font.PLAIN, 13));
 		jl_drink01.setForeground(new Color(0, 0, 255));
-		jl_drink01.setBounds(20, 110, 80, 20);
+		jl_drink01.setBounds(20, 100, 80, 20);
 		add(jl_drink01);
 
 		JButton jButton = new JButton("");
@@ -120,7 +120,7 @@ public class orderPage extends JPanel {
 			}
 		});
 
-		jButton.setBounds(10, 10, 90, 90);
+		jButton.setBounds(15, 15, 85, 85);
 		jButton.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/drink_01.png")));
 		add(jButton); 
 		// pink pink ends 
@@ -130,7 +130,7 @@ public class orderPage extends JPanel {
 		JLabel jl_drink02 = new JLabel("2. BLUE  BLUE");
 		jl_drink02.setForeground(Color.BLUE);
 		jl_drink02.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_drink02.setBounds(135, 110, 80, 20);
+		jl_drink02.setBounds(125, 100, 100, 20);
 		add(jl_drink02);
 
 		JButton jButton2 = new JButton("");
@@ -149,7 +149,7 @@ public class orderPage extends JPanel {
 			}
 		});
 
-		jButton2.setBounds(125, 10, 90, 90);
+		jButton2.setBounds(125, 15, 85, 85);
 		jButton2.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/drink_02.png")));
 		add(jButton2);
 
@@ -157,7 +157,7 @@ public class orderPage extends JPanel {
 		JLabel jl_drink03 = new JLabel("3. PINA PINA ");
 		jl_drink03.setForeground(Color.BLUE);
 		jl_drink03.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_drink03.setBounds(245, 109, 80, 20);
+		jl_drink03.setBounds(235, 100, 80, 20);
 		add(jl_drink03);
 
 		JButton jButton3 = new JButton("");
@@ -177,14 +177,14 @@ public class orderPage extends JPanel {
 			}
 		});
 
-		jButton3.setBounds(235, 10, 90, 90);
+		jButton3.setBounds(235, 15, 85, 85);
 		jButton3.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/drink_03.png")));
 		add(jButton3);
 
 		JLabel jl_highball01 = new JLabel("4. 하이볼");
 		jl_highball01.setForeground(Color.BLUE);
 		jl_highball01.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_highball01.setBounds(35, 235, 50, 20);
+		jl_highball01.setBounds(30, 215, 70, 20);
 		add(jl_highball01);
 
 		JButton jButton4  = new JButton("");
@@ -204,14 +204,14 @@ public class orderPage extends JPanel {
 			}
 		});
 
-		jButton4.setBounds(10, 135, 90, 90);
+		jButton4.setBounds(15, 130, 85, 85);
 		jButton4.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/highball_01.png")));
 		add(jButton4);
 
 		JLabel jl_highball02 = new JLabel("5. 모히또");
 		jl_highball02.setForeground(Color.BLUE);
 		jl_highball02.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_highball02.setBounds(150, 235, 50, 20);
+		jl_highball02.setBounds(140, 215, 60, 20);
 		add(jl_highball02);	 
 
 		JButton jButton5 = new JButton("");
@@ -230,7 +230,7 @@ public class orderPage extends JPanel {
 				total[4] = 12000 * count[4];
 			}
 		});
-		jButton5.setBounds(125, 135, 90, 90);
+		jButton5.setBounds(125, 130, 85, 85);
 		jButton5.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/highball_02.png")));
 		add(jButton5);
 
@@ -238,7 +238,7 @@ public class orderPage extends JPanel {
 		JLabel jl_highball03 = new JLabel("6. 슬러시 잭콕");
 		jl_highball03.setForeground(Color.BLUE);
 		jl_highball03.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_highball03.setBounds(245, 235, 80, 20);
+		jl_highball03.setBounds(230, 215, 90, 20);
 		add(jl_highball03);
 
 		JButton jButton6 = new JButton("");
@@ -258,14 +258,14 @@ public class orderPage extends JPanel {
 			}
 		});
 
-		jButton6.setBounds(235, 135, 90, 90);
+		jButton6.setBounds(235, 130, 85, 85);
 		jButton6.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/highball_03.png")));
 		add(jButton6);
 
 		JLabel jl_pizza01 = new JLabel("7. 치즈  피자");
 		jl_pizza01.setForeground(Color.BLUE);
 		jl_pizza01.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_pizza01.setBounds(30, 355, 60, 20);
+		jl_pizza01.setBounds(25, 330, 80, 20);
 		add(jl_pizza01);
 
 		JButton jButton7 = new JButton("");
@@ -284,14 +284,14 @@ public class orderPage extends JPanel {
 				total[6] = 5000 * count[6];
 			}
 		});
-		jButton7.setBounds(12, 260, 90, 90);
+		jButton7.setBounds(15, 245, 85, 90);
 		jButton7.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/pizza_01.png")));
 		add(jButton7);
 
 		JLabel jl_pizza02 = new JLabel("8. 페퍼로니 피자");
 		jl_pizza02.setForeground(Color.BLUE);
 		jl_pizza02.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_pizza02.setBounds(130, 355, 90, 20);
+		jl_pizza02.setBounds(120, 330, 100, 20);
 		add(jl_pizza02);
 
 		JButton jButton8 = new JButton("");
@@ -311,7 +311,7 @@ public class orderPage extends JPanel {
 			}
 		});
 
-		jButton8.setBounds(125, 260, 90, 90);
+		jButton8.setBounds(125, 245, 85, 90);
 		jButton8.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/pizza_02.png")));
 		add(jButton8);
 
@@ -319,7 +319,7 @@ public class orderPage extends JPanel {
 		JLabel jl_pizza03 = new JLabel("9. 불고기 피자");
 		jl_pizza03.setForeground(Color.BLUE);
 		jl_pizza03.setFont(new Font("Serif", Font.PLAIN, 13));
-		jl_pizza03.setBounds(245, 355, 70, 20);
+		jl_pizza03.setBounds(235, 330, 90, 20);
 		add(jl_pizza03);
 
 		JButton jButton9 = new JButton("");
@@ -339,12 +339,14 @@ public class orderPage extends JPanel {
 				total[8] = 6000 * count[8];
 			}
 		});
-		jButton9.setBounds(235, 260, 90, 90);
+		jButton9.setBounds(235, 245, 85, 90);
 		jButton9.setIcon(new ImageIcon(orderPage.class.getResource("/logo_Image/pizza_03.png")));
 		add(jButton9);
 
-		JButton btnNewButton = new JButton("Order");
-		btnNewButton.setBounds(40, 551, 91, 23);
+		JButton btnNewButton = new JButton("주문하기");
+		btnNewButton.setForeground(Color.BLUE);
+		btnNewButton.setFont(new Font("Serif", Font.BOLD, 14));
+		btnNewButton.setBounds(70, 560, 200, 40);
 		add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
@@ -377,8 +379,10 @@ public class orderPage extends JPanel {
 			}
 		});
 		
-		JButton cancelButton = new JButton("-");
-		cancelButton.setBounds(120, 551, 91, 23);
+		JButton cancelButton = new JButton("취소하기");
+		cancelButton.setForeground(Color.GRAY);
+		cancelButton.setFont(new Font("Serif", Font.PLAIN, 10));
+		cancelButton.setBounds(70, 535, 100, 25);
 		add(cancelButton);
 		cancelButton.addActionListener(new ActionListener() {	
 			@Override
@@ -388,8 +392,10 @@ public class orderPage extends JPanel {
 			}
 		});
 		
-		JButton resetButton = new JButton("Reset");
-		resetButton.setBounds(200, 551, 91, 23);
+		JButton resetButton = new JButton("전체취소");
+		resetButton.setForeground(Color.MAGENTA);
+		resetButton.setFont(new Font("Serif", Font.PLAIN, 10));
+		resetButton.setBounds(170, 535, 100, 25);
 		add(resetButton);
 		resetButton.addActionListener(new ActionListener() {
 			@Override

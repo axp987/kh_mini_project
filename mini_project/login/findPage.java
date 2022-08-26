@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.awt.Color;
 import javax.swing.UIManager;
 
-import jdbclass.overlapCheck;
+import jdbclass.join_jdbc;
 
 import javax.swing.JTextField;
 import javax.swing.JSplitPane;
@@ -123,7 +123,7 @@ public class findPage extends JFrame {
 						bt_send.addMouseListener(new MouseAdapter() {
 							@Override
 							public void mouseClicked(MouseEvent e) {
-								overlapCheck a = new overlapCheck();
+								join_jdbc a = new join_jdbc();
 								a.phCheck();
 								
 								boolean check = a.phCheck();
@@ -146,7 +146,7 @@ public class findPage extends JFrame {
 							@Override
 							public void mouseClicked(MouseEvent e) {
 								
-								overlapCheck b = new overlapCheck();
+								join_jdbc b = new join_jdbc();
 								b.phCheck();
 								
 								boolean check = b.phCheck();

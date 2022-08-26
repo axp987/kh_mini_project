@@ -1,13 +1,9 @@
 package main;
 // 마이페이지, Insert 클래스 >> 등록 소스 주석 처리한부분
 import javax.swing.*;
-
 import javax.swing.text.MaskFormatter;
 
-import jdbclass.DBConnection;
-import jdbclass.Insert;
-import jdbclass.Select;
-import jdbclass.overlapCheck;
+import jdbclass.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.*;
 import login.*;
-
 public class myPage extends JPanel {
 	private JLabel EmailField;
 	private JTextField birthField;
@@ -39,39 +34,32 @@ public class myPage extends JPanel {
 	private JTextField adr_tf2;
 	private JTextField textField;
 	private JFormattedTextField birthDate_Input;
-	public static String email;
-	private String order_name;
-	
 
 	Connection con = null;           
 	PreparedStatement pstmt = null;  
 	ResultSet rs = null;             
 	String sql = null; 
-	
-	
+
 
 	public myPage() {
+		
+		
+		setBackground(SystemColor.window);
 		JFrame frame = new JFrame();
-		JLabel hello = new JLabel("\" myPage. \"");
-		hello.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 16));
-		hello.setBounds(135, 45, 135, 30);
-		add(hello);
 
 		// 이메일 입력
-		JLabel Email = new JLabel("* 이 메 일");
+		JLabel Email = new JLabel("*  E m a i l ");
 		Email.setFont(new Font("Serif", Font.BOLD, 13));
-		Email.setBounds(92, 145, 80, 20);
+		Email.setBounds(80, 145, 80, 20);
 		add(Email);
-		
-		
+
 		EmailField = new JLabel();
 		EmailField.setBounds(165, 143, 206, 25);
 		EmailField.setFont(new Font("Serif", Font.BOLD, 13));
 		add(EmailField);
-		email = EmailField.getText();
-		
+
 		// 비밀번호 입력       
-		JLabel pw = new JLabel("Now Password");
+		JLabel pw = new JLabel("Password");
 		pw.setFont(new Font("Serif", Font.BOLD, 13));
 		pw.setBounds(95, 240, 206, 20);
 		add(pw);
@@ -81,9 +69,9 @@ public class myPage extends JPanel {
 		pwField.setBounds(92, 266, 206, 25);
 		add(pwField);
 
-		JLabel pw2 = new JLabel("New Passsword");
+		JLabel pw2 = new JLabel("New Password");
 		pw2.setFont(new Font("Serif", Font.BOLD, 13));
-		pw2.setBounds(92, 301, 120, 25);
+		pw2.setBounds(95, 301, 206, 25);
 		add(pw2);
 		
 		//비밀번호 확인창 
@@ -92,6 +80,7 @@ public class myPage extends JPanel {
 		add(pwField2);
 
 		JButton button0 = new JButton("패스워드 변경");
+		button0.setForeground(new Color(0, 0, 255));
 		button0.setBounds(90, 355, 120, 25);
 		add(button0);
 		button0.addActionListener(new ActionListener() {	
@@ -103,12 +92,10 @@ public class myPage extends JPanel {
 					Character.toString(cpw[i]);
 					 pw += (pw.equals("")) ? ""+cpw[i]+"" : ""+cpw[i]+"";
 				}
-				overlapCheck ch = new overlapCheck();
+				join_jdbc ch = new join_jdbc();
 				boolean check = ch.changePassword(EmailField.getText(), pw);
 				if(check == true) {
 					passwordUpdate();
-					pwField.setText(null);
-					pwField2.setText(null);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "현재 패스워드가 다릅니다.");
@@ -121,14 +108,13 @@ public class myPage extends JPanel {
 		name.setFont(new Font("Serif", Font.BOLD, 13));
 		name.setBounds(80, 85, 70, 20);
 		add(name);
-		
-		
+
 		// 이름 입력 
 		name_tf = new JTextField();
 		name_tf.setBounds(160, 85, 140, 25);
 		add(name_tf);
 		name_tf.setColumns(10);
-		order_name = name_tf.getText();
+
 
 		//생년월일 섹션 
 		JLabel birthDate = new JLabel("* 생 년 월 일");
@@ -180,6 +166,8 @@ public class myPage extends JPanel {
 		try 
 		{
 			adr_tf1 = new JTextField("주소 1 입력");
+			//adr_tf1.setForeground(new Color(192, 192, 192));
+
 
 			adr_tf1.addMouseListener(new MouseAdapter() {
 				@Override
@@ -222,8 +210,8 @@ public class myPage extends JPanel {
 		}
 
 		JButton button1 = new JButton("수정하기");
-		button1.setForeground(Color.RED);
-		button1.setBounds(92, 520, 85, 30);
+		button1.setForeground(new Color(0, 0, 255));
+		button1.setBounds(100, 500, 85, 30);
 		add(button1);
 		button1.addActionListener(new ActionListener() {
 
@@ -234,8 +222,8 @@ public class myPage extends JPanel {
 		});
 
 		JButton button2 = new JButton("새로고침");
-		button2.setForeground(new Color(218, 112, 214));
-		button2.setBounds(176, 520, 85, 30);
+		button2.setForeground(new Color(255, 0, 255));
+		button2.setBounds(209, 500, 85, 30);
 		add(button2);
 		button2.addActionListener(new ActionListener() {
 			@Override
@@ -244,18 +232,15 @@ public class myPage extends JPanel {
 			}
 		});
 
-		//배경 이미지 
-		JLabel   bgImage = new JLabel("");
-		bgImage.setBounds(0, 0, 375, 639);
-		add(bgImage);
+	
 
 
-		setBounds(100, 100, 375, 667);
+		setBounds(100, 100, 355, 600);
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("* 회원가입일");
 		lblNewLabel.setFont(new Font("Serif", Font.BOLD, 13));
-		lblNewLabel.setBounds(140, 175, 150, 25);
+		lblNewLabel.setBounds(95, 175, 150, 25);
 		add(lblNewLabel);
 
 		textField = new JTextField();
@@ -264,8 +249,19 @@ public class myPage extends JPanel {
 		textField.setColumns(30);
 		
 		JButton button3 = new JButton("탈퇴하기");
-		button3.setBounds(140, 560, 85, 30);
+		button3.setForeground(new Color(192, 192, 192));
+		button3.setBounds(150, 540, 85, 30);
 		add(button3);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 204, 255));
+		panel.setBounds(12, 20, 330, 576);
+		add(panel);
+		
+		JLabel hello = new JLabel("");
+		panel.add(hello);
+		hello.setIcon(new ImageIcon(myPage.class.getResource("/logo_Image/mypage_icon.png")));
+
 
 		rollback();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -282,7 +278,9 @@ public class myPage extends JPanel {
 					JOptionPane.showMessageDialog(null, "취소 버튼을 클릭하셨습니다.");
 				}else {     
 					delete();
-					setVisible(false);
+				System.exit(0);
+				
+				
 					new loginPage();
 				}
 			}
@@ -290,6 +288,7 @@ public class myPage extends JPanel {
 	}
 
 	public void rollback() {
+		
 		con = DBConnection.getConnection();
 		try {
 			sql= "select EMA, NA, birthd, ph, addr1, addr2, C_TIME  FROM USERSTABLE WHERE EMA =?";
@@ -298,7 +297,7 @@ public class myPage extends JPanel {
 			System.out.println(select.getEmailPass());
 			pstmt.setString(1, select.getEmailPass());
 			rs = pstmt.executeQuery();
-		
+			
 			String ema = "", name = "", birthd = "", phone = "", add1 = "", add2 = "", time = "";
 			while(rs.next()) {
 				ema = rs.getString("EMA");
@@ -401,28 +400,18 @@ public class myPage extends JPanel {
 			int res = pstmt.executeUpdate();
 
 			if(res>0) {
-				JOptionPane.showMessageDialog(null, " 삭제 성공");
+				JOptionPane.showMessageDialog(null, "계정 삭제 완료");
+				JOptionPane.showConfirmDialog(null, "프로그램을 종료합니다. 안녕!" );
 			}else {
-				JOptionPane.showMessageDialog(null, " 삭제 실패");
+				JOptionPane.showMessageDialog(null, "계정 삭제 실패");
 			}
+			
 			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-		
-		
-	} //xx
+	} 
 	
-	public myPage(String order_name) {
-		this.order_name = order_name;
-	}
-	
-	public String getOrder_name() {
-		return order_name;
-	}
-
-	public void setOrder_name(String order_name) {
-		this.order_name = order_name;
-	}
+	//xx
 }//class
 

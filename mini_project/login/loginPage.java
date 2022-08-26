@@ -15,6 +15,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 
 public class loginPage extends JFrame{
@@ -82,13 +86,15 @@ public class loginPage extends JFrame{
 					 pw += (pw.equals("")) ? ""+cpw[i]+"" : ""+cpw[i]+"";
 				}
 				
-				Select c = new Select();
-				boolean check = c.loginSelect(ema, pw);
 				
-				if(userName.getText().equals("")) {
+				Select c = new Select();
+				boolean check = c.loginSelect(ema,pw);
+				System.out.println(check + ema + pw);
+				
+				if(userName.getText().equals("") || passwordField.equals("")) {
 					JOptionPane.showMessageDialog(null, "아이디 또는 패스워드를 입력해주세요.");
 				}
-				else if(check == true) {
+				else if(check==true) {
 					JOptionPane.showMessageDialog(null, "Welcome!");
 					setVisible(false);
 					totalPage total = new totalPage("Music box");
@@ -102,6 +108,7 @@ public class loginPage extends JFrame{
 //				setVisible(false);
 			}
 		});
+
 
 
 		// 엔터 버튼 폰트 설정 
@@ -166,5 +173,8 @@ public class loginPage extends JFrame{
 
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
 	}
+	
 }

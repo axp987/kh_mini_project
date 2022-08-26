@@ -1,39 +1,48 @@
 package login;
 
 import jdbclass.*;
-
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
+
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class join extends JFrame {
-	private JTextField inputUserName; //이메일
+	private JTextField inputUserName;
 	private JTextField name_tf;
 	private JPasswordField pwField;
 	private JPasswordField pwField2;
+	private JTextField phone_tf0;
 	private JTextField phone_tf1;
 	private JTextField phone_tf2;
+	private JFormattedTextField birthDate_Input;
 	private JTextField adr_tf1;
 	private JTextField adr_tf2;
-	private JFormattedTextField birthDate_Input; //생일박스
-	private JTextField adr_tf10;
-	private JTextField adr_tf20;
-	
+
 	private boolean moretest;
 	private boolean idcheck;
 	
 	private String spw1 = "", spw2 = ""; // 패스워드 변환변수;
+
+
 	public join() {
-		//회원가입 안내 멘트
+		//회원가입 안내 멘트 
 		JLabel hello = new JLabel("\" Hello, Stranger. \"");
 		hello.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 16));
 		hello.setBounds(135, 45, 135, 30);
@@ -43,41 +52,44 @@ public class join extends JFrame {
 		lblNewLabel_2.setFont(new Font("Serif", Font.PLAIN, 10));
 		lblNewLabel_2.setBounds(135, 75, 150, 15);
 		getContentPane().add(lblNewLabel_2);
-		
+		//////////////////
 		// 아이디 입력
-		JLabel userName = new JLabel("Email");
+		JLabel	userName = new JLabel("Email");
 		userName.setFont(new Font("Serif", Font.BOLD, 13));
 		userName.setBounds(92, 133, 40, 20);
 		getContentPane().add(userName);
-
+		
 		inputUserName = new JTextField();
 		inputUserName.setBounds(92, 157, 206, 25);
 		getContentPane().add(inputUserName);
 		inputUserName.setColumns(10);
-
+		
 		JButton userNameCheck = new JButton("중복확인");
 		userNameCheck.setFont(new Font("Serif", Font.PLAIN, 7));
 		userNameCheck.setBounds(295, 155, 55, 30);
 		getContentPane().add(userNameCheck);
-		userNameCheck.addActionListener(new ActionListener() {	
+		
+		userNameCheck.addActionListener(new ActionListener(	) {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				overlapCheck same = new overlapCheck(inputUserName.getText());
-				moretest = same.sameTest();
-				if(inputUserName.getText().length() == 0) {
-					JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.");
-				}
-				else if(moretest == true) {
-					JOptionPane.showMessageDialog(null, "중복된 이메일입니다.");
-					inputUserName.setText("");
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "사용 가능한 이메일입니다.");
-					idcheck = true;
-				}
 
+				join_jdbc same = new join_jdbc(inputUserName.getText());
+				moretest = same.sameTest();
+				
+				if(inputUserName.getText().length() == 0) {
+					JOptionPane.showMessageDialog(null, "이메일을 입력해주세요");
+				} else if (moretest == true) {
+					JOptionPane.showConfirmDialog(null, "중복된 이메일입니다." ); 
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "사용 가능한 이메일입니다.");
+					idcheck = true; 
+				}
+				
 			}
 		});
+
 
 		// 비밀번호 입력 		
 		JLabel pw = new JLabel("Password");
@@ -95,7 +107,7 @@ public class join extends JFrame {
 		pwField2.setBounds(92, 220, 206, 25);
 		getContentPane().add(pwField2);
 
-		JLabel pwCheck = new JLabel("8~15자 이내의 비밀번호 입력");
+		JLabel pwCheck = new JLabel("4~10자 이내의 비밀번호 입력");
 		pwCheck.setForeground(new Color(128, 128, 128));
 		pwCheck.setFont(new Font("Serif", Font.PLAIN, 9));
 		pwCheck.setBounds(178, 246, 120, 15);
@@ -142,20 +154,34 @@ public class join extends JFrame {
 		birthDate.setFont(new Font("Serif", Font.BOLD, 13));
 		birthDate.setBounds(80, 345, 75, 20);
 		getContentPane().add(birthDate);
-
-		//생년월일 입력창 
+		
+		
 		try 
 		{
 			MaskFormatter format = new MaskFormatter("####-##-##");
 
 			birthDate_Input = new JFormattedTextField("ex)19951011");
-			birthDate_Input.setForeground(new Color(192, 192, 192));
-
+			birthDate_Input.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyTyped(KeyEvent e) {
+					
+					char ch = e.getKeyChar();
+					
+					if(!Character.isDigit(ch) || (ch==KeyEvent.VK_BACK_SPACE)  || (ch==KeyEvent.VK_DELETE))
+			{
+						e.consume();
+			}
+				}
+			});
+			
+	
 
 			birthDate_Input.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					
 					birthDate_Input.setText("");
+					birthDate_Input.requestFocus();
 				}
 			});
 
@@ -173,23 +199,29 @@ public class join extends JFrame {
 		phone.setFont(new Font("Serif", Font.BOLD, 13));
 		phone.setBounds(80, 375, 75, 20);
 		getContentPane().add(phone);
+		
+		
+		// 연락처 첫자리 
+		JLabel phone_tf0 = new JLabel("0 1 0");
+		phone.setFont(new Font("Serif", Font.BOLD, 13));
+		phone_tf0.setBounds(165, 368, 35, 30);
+		getContentPane().add(phone_tf0);
 
-		//연락처 국번 (ex.010,011,070... ) 선택창 
-		JComboBox phone_jcb = new JComboBox();
-		phone_jcb.setBounds(160, 372, 52, 27);
-		getContentPane().add(phone_jcb);
+
 
 		// 연락처 중간자리 
 		phone_tf1 = new JTextField();
-		phone_tf1.setBounds(210, 370, 45, 25);
+		phone_tf1.setBounds(210, 370, 44, 25);
 		getContentPane().add(phone_tf1);
 		phone_tf1.setColumns(4);
+		
+		
 
 		// 연락처 끝자리 
 		phone_tf2 = new JTextField();
-		phone_tf2.setBounds(259, 370, 45, 25);
+		phone_tf2.setBounds(260, 370, 44, 25);
 		getContentPane().add(phone_tf2);
-		phone_tf2.setColumns(10);
+		phone_tf2.setColumns(4);
 
 
 		// 주소 섹션 
@@ -206,7 +238,7 @@ public class join extends JFrame {
 		try 
 		{
 			adr_tf1 = new JTextField("주소 1 입력");
-			adr_tf1.setForeground(new Color(192, 192, 192));
+			adr_tf1.setForeground(Color.BLACK);
 
 
 			adr_tf1.addMouseListener(new MouseAdapter() {
@@ -232,7 +264,7 @@ public class join extends JFrame {
 		try 
 		{
 			adr_tf2 = new JTextField("주소 2 입력");
-			adr_tf2.setForeground(new Color(192, 192, 192));
+			adr_tf2.setForeground(Color.BLACK);
 
 
 			adr_tf2.addMouseListener(new MouseAdapter() {
@@ -249,6 +281,8 @@ public class join extends JFrame {
 
 			e.printStackTrace();
 		}
+		
+		
 
 
 
@@ -278,6 +312,12 @@ public class join extends JFrame {
 					if(spw1.isEmpty() || spw2.isEmpty()) { //패스워드 빈값, 중복확인
 						JOptionPane.showMessageDialog(null, "패스워드를 입력해주세요.");
 					}
+					else if(spw1.length() < 4 || spw2.length() < 4){
+						JOptionPane.showMessageDialog(null, "4자 이상의 비밀번호를 입력해주세요.");;
+					}
+					else if(spw1.length() > 10 || spw2.length() > 10) {
+						JOptionPane.showMessageDialog(null, "비밀번호는 10자 이하로 입력해주세요.");
+					}
 					else if(!spw1.equals(spw2)){
 						JOptionPane.showMessageDialog(null, "패스워드가 다릅니다.");
 					}
@@ -294,7 +334,13 @@ public class join extends JFrame {
 									JOptionPane.showMessageDialog(null, " 연락처를 입력해주세요.");
 								} else {
 									JOptionPane.showMessageDialog(null, " 회원가입을 환영합니다.");
-									new Insert(inputUserName.getText(), spw1, name_tf.getText(), birthDate_Input.getText(), phone_tf1.getText(), phone_tf2.getText(), adr_tf1.getText(), adr_tf2.getText());
+									
+									new Insert(inputUserName.getText(), spw1, name_tf.getText(),
+											birthDate_Input.getText(), phone_tf1.getText(),phone_tf2.getText(),
+											adr_tf1.getText(), adr_tf2.getText());
+									
+									
+							
 									setVisible(false);
 								}
 							}//연락처 공백체크
@@ -337,6 +383,7 @@ public class join extends JFrame {
 
 		setBounds(100, 100, 375, 667);
 		getContentPane().setLayout(null);
+		
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -433,6 +480,4 @@ public class join extends JFrame {
 	public void setSpw2(String spw2) {
 		this.spw2 = spw2;
 	}
-	
-	
 }

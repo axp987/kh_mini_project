@@ -29,7 +29,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 
-public class mainPage_kb extends JPanel{
+public class mainPage_kb extends JFrame{
 
 	public mainPage_kb() {
 
